@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 
 const Form = ({ handleUpdate, handleAdd, propertyToChange, object }) => {
+  // Inorder to store the value of old property to new property and then delete it later
   const [oldProperty, setOldProperty] = useState("");
   const [property, setProperty] = useState("");
   const [value, setValue] = useState("");
+
   const handleFormSave = () => {
     if (propertyToChange) {
       handleUpdate(oldProperty, property);
@@ -14,6 +16,8 @@ const Form = ({ handleUpdate, handleAdd, propertyToChange, object }) => {
     setProperty("");
     setValue("");
   };
+
+  // Setting the property as property to change which will load the property to the input field
   useEffect(() => {
     if (propertyToChange) {
       setOldProperty(propertyToChange);
@@ -36,16 +40,18 @@ const Form = ({ handleUpdate, handleAdd, propertyToChange, object }) => {
         placeholder="Value"
         type="text"
         value={value}
+        // Changing the value of the key is prevented in this case to properly observe the change of property, For changing value we can pass different Value for the same key and simply add
         disabled={propertyToChange}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button onClick={handleFormSave}>Add</button>
+      <button onClick={handleFormSave}>Save</button>
     </div>
   );
 };
 
 const ObjectPage = () => {
   const [object, setObject] = useState({});
+  //If there is propertyToChange then the Form will perform Edit Operation otherwise Add Operation
   const [propertyToChange, setPropertyToChange] = useState(null);
 
   const handleAdd = (property, value) => {
@@ -57,15 +63,18 @@ const ObjectPage = () => {
     delete obj[property];
     setObject(obj);
   };
+  // This will set if there was a call for a property to change
   const handleEdit = (property) => {
     setPropertyToChange(property);
   };
+
   const handleUpdate = (oldProperty, newProperty) => {
     const obj = {...object, [newProperty]: object[oldProperty]};
     delete obj[oldProperty];
     setPropertyToChange(null)
     setObject(obj);
   };
+  // To observe the change in the object itself
   useEffect(() => {
     console.log(object);
   }, [object]);
