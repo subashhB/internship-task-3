@@ -20,12 +20,14 @@ const Array = () => {
     setInsertData("");
     setArrayData(insertedArray);
   };
+
   const handleInsertAtIndex =() =>{
-    let insertedArray = [];
-    insertedArray = arrayData.splice(insertIndex, 0, insertAtIndexData);
+    let insertedArray = [...arrayData];
+    insertedArray.splice(insertIndex, 0, insertAtIndexData);
+    setArrayData(insertedArray);
     setInsertAtIndexData("");
     setInsertIndex(0);
-    setArrayData(insertedArray);
+    
   }
   const handleRemove = ()=>{
     let filteredArray = [...arrayData];
